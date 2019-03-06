@@ -1,42 +1,33 @@
-import React, { Component } from 'react';
+import React, { Suspense } from 'react';
 import Spinner from './Spinner';
 import fetchAPI from './fetchAPI';
 
-class Profile extends Component {
-  state = {
-    profilePicture: null,
-    intro: null,
-  }
+import { unstable_createResource } from 'react-cache'
 
-  componentDidMount() {
-    // fetch profile picture and text content
-    fetchAPI('/profile/photo').then((profilePicture) => {
-      this.setState({ profilePicture });
-    });
-    fetchAPI('/profile/intro').then((intro) => {
-      this.setState({ intro });
-    })
-  }
+const photooResource = unstable_createResource(() => fetchAPI('/profile/photo'))
+const introResource = unstable_createResource(() => fetchAPI('/profile/intro'))
 
-  render() {
-    const { profilePicture, intro } = this.state;
-    return (
-      <>
+function Profile() {
+  const profilePicture = photooResource.read()
+  const intro = introResource.read()
+  return (
+    <>
+      <Suspense fallback={<Spinner />}>
         <div className="profile-picture">
-          {profilePicture ? (
-            <img src={profilePicture} alt="IloveColdplay" />
-          ) : <Spinner />}
+          <img src={profilePicture} alt=""/>
         </div>
+      </Suspense>
+      <Suspense fallback={<Spinner />}>
         <div className="profile-intro">
-          {intro ? (
+          {
             intro.split('\n').map((para, index) => (
               <p key={index}>{para}</p>
             ))
-          ) : <Spinner />}
+          }
         </div>
-      </>
-    );
-  }
+      </Suspense>
+    </>
+  );
 }
 
 export default Profile;
