@@ -1,14 +1,13 @@
 import React from 'react';
 import { Router } from "@reach/router";
 
-import TabContainer from './TabContainer';
 import NavLink from './NavLink';
+
+import './App.css';
 
 import Profile from './Profile';
 import Albums from './Albums';
 import Voting from './Voting';
-
-import './App.css';
 
 function App() {
   return (
@@ -19,13 +18,11 @@ function App() {
         <NavLink to="albums">Albums</NavLink>
         <NavLink to="voting">Voting</NavLink>
       </nav>
-      <TabContainer>
-        <Router>
-          <Profile path="/" />
-          <Albums path="albums" />
-          <Voting path="voting" />
-        </Router>
-      </TabContainer>
+      <Router>
+        <Profile path="/" />
+        <Albums path="albums" />
+        <Voting path="voting" />
+      </Router>
     </div>
   );
 }

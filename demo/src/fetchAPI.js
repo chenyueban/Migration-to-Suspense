@@ -23,7 +23,7 @@ function getDataFromQuery(query) {
 }
 
 function getAdditionalDelay(url) {
-  const difference = window.fastNetwork ? 100 : 600;
+  const difference = 100;
   const maxDelay = difference * 3;
 
   if (url.includes('album')) {
@@ -34,7 +34,7 @@ function getAdditionalDelay(url) {
 
 function fetchAPI(url) {
   const result = getDataFromQuery(url);
-  const baseSpeed = window.fastNetwork ? 150 : 1500;
+  const baseSpeed = 150;
   let delay;
 
   delay = baseSpeed * isImage(result);
